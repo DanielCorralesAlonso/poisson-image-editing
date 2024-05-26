@@ -8,9 +8,11 @@ class MaskMover():
     def __init__(self, image_path, mask_path):
         self.image_path, self.mask_path = image_path, mask_path
         self.image = cv2.imread(image_path)
+        self.image = cv2.resize(self.image, (512,512))
         self.image_copy = self.image.copy()
 
         self.original_mask = cv2.imread(mask_path)
+        self.original_mask = cv2.resize(self.original_mask, (340,340))
         self.original_mask_copy = np.zeros(self.image.shape)
         self.original_mask_copy[np.where(self.original_mask!=0)] = 255
 

@@ -51,6 +51,9 @@ if __name__ == '__main__':
     #    
     source = cv2.imread(args["source"])
     target = cv2.imread(args["target"])
+
+    source = cv2.resize(source, (340,340))
+    target = cv2.resize(target, (512,512))
     
     if source is None or target is None:
         print('Source or target image not exist.')
@@ -72,14 +75,19 @@ if __name__ == '__main__':
     # adjust mask position for target image
     print('Please move the object to desired location to apparate.\n')
     mm = MaskMover(args["target"], mask_path)
-    offset_x, offset_y, target_mask_path = mm.move_mask()            
+    offset_x, offset_y, target_mask_path = mm.move_mask()   
+
 
     # blend
     print('Blending ...')
-    target_mask = cv2.imread(target_mask_path, cv2.IMREAD_GRAYSCALE) 
+    target_mask = cv2.imread( target_mask_path, cv2.IMREAD_GRAYSCALE) 
+
+
     offset = offset_x, offset_y
 
     poisson_blend_result = poisson_edit(source, target, target_mask, offset)
+
+    poisson_blend_result = cv2.resize(poisson_blend_result, (512,512))
     
     cv2.imwrite(path.join(path.dirname(args["source"]), 'target_result.png'), 
                 poisson_blend_result)
