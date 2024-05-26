@@ -52,7 +52,7 @@ if __name__ == '__main__':
     source = cv2.imread(args["source"])
     target = cv2.imread(args["target"])
 
-    source = cv2.resize(source, (340,340))
+    source = cv2.resize(source, (300,300))
     target = cv2.resize(target, (512,512))
     
     if source is None or target is None:
@@ -87,9 +87,17 @@ if __name__ == '__main__':
 
     poisson_blend_result = poisson_edit(source, target, target_mask, offset)
 
+    import pdb
+    pdb.set_trace()
+
+    copy_and_paste = cv2.resize(source*target_mask + target*(1-target_mask), (512,512))
+
     poisson_blend_result = cv2.resize(poisson_blend_result, (512,512))
     
     cv2.imwrite(path.join(path.dirname(args["source"]), 'target_result.png'), 
                 poisson_blend_result)
+    
+    cv2.imwrite(path.join(path.dirname(args["source"]), 'copy_and_paste.png'),
+                copy_and_paste)
     
     print('Done.\n')

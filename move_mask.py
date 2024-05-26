@@ -12,7 +12,7 @@ class MaskMover():
         self.image_copy = self.image.copy()
 
         self.original_mask = cv2.imread(mask_path)
-        self.original_mask = cv2.resize(self.original_mask, (340,340))
+        self.original_mask = cv2.resize(self.original_mask, (300,300))
         self.original_mask_copy = np.zeros(self.image.shape)
         self.original_mask_copy[np.where(self.original_mask!=0)] = 255
 
